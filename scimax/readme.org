@@ -1,0 +1,52 @@
+#+title: Python package to run scimax
+
+The idea in this package is to make it very easy to install scimax from python on all platforms.
+
+#+BEGIN_SRC sh
+pip install scimax
+#+END_SRC
+
+This will download the scimax elisp code, and install it in a Python package. There is also a simple command to open scimax. This is currently an experiment.
+
+Goals:
+1. Require emacs 26
+2. Maintain my own elpa packages to make initial installation easier (it is slow downloading everything from melpa, and it often fails somehow) and to make sure users start with the packages I know work.
+3. Setup scripts to run scimax, including emacsclient integration
+
+* update strategy
+
+what to do for updates? One strategy is to stash/pull
+https://stackoverflow.com/questions/28265396/gitpython-how-to-git-stash-changes-to-a-gitpython-repository
+
+Another is only update automatically when everything is clean, and require manual updates otherwise.
+
+* TODO scripts
+
+[[./scripts/scimax]] will open scimax
+
+#+BEGIN_SRC sh :results output
+python scripts/scimax -h
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+usage: scimax [-h] [--update] [-e E] [-c] [-t] [-k] [-q] [--edit-user]
+              [--edit-preload]
+              [files [files ...]]
+
+Open scimax.
+
+positional arguments:
+  files
+
+optional arguments:
+  -h, --help      show this help message and exit
+  --update        Update scimax before opening.
+  -e E            Emacs lisp code to run
+  -c              Create a new frame
+  -t              Run in terminal
+  -k              Kill scimax
+  -q              Do not load scimax
+  --edit-user     Edit the user.el file
+  --edit-preload  Edit the preload.el file
+#+end_example

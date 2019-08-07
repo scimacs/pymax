@@ -1,0 +1,133 @@
+#!/usr/bin/env python
+import os
+import shutil
+import scimax
+import subprocess
+import argparse
+import git
+import sys
+import configparser
+
+
+parser = argparse.ArgumentParser(description='Open scimax.')
+parser.add_argument('--update', help='Update scimax before opening.',
+                    action="store_true")
+parser.add_argument('-e', help='Emacs lisp code to run')
+parser.add_argument('-c', help='Create a new frame', action="store_true")
+parser.add_argument('-t', help='Run in terminal', action="store_true")
+parser.add_argument('-k', help='Kill scimax', action="store_true")
+parser.add_argument('-q', help='Do not load scimax', action="store_true")
+parser.add_argument('--debug', help='Print debug commands',
+                    action="store_true")
+
+parser.add_argument('--edit-user', help='Edit the user.el file',
+                    action="store_true")
+
+parser.add_argument('--edit-preload', help='Edit the preload.el file',
+                    action="store_true")
+
+
+parser.add_argument('files', nargs='*')
+args = parser.parse_args()
+
+# Defaults
+emacs = shutil.which('emacs')
+scimax_dir = os.expanduser('~/.scimax/scimax')
+scimax_init = os.path.join(scimax_dir, 'init.el')
+
+# The defaults can be overwritten here
+config = configparser.ConfigParser()
+cf = os.path.expanduser('~/.scimax/config')
+
+if os.path.exists(cf):
+    config.read(cf)
+    emacs = config['DEFAULT'].get('emacs', emacs)
+    scimax_dir = config['DEFAULT'].get('scimax_dir', scimax_dir)
+    scimax_init = os.path.join(scimax_dir, 'init.el')
+
+
+if args.update:
+    repo = git.Repo(scimax_dir)
+    o = repo.remotes.origin
+    o.pull()
+
+if args.k:
+    print('Closing scimax.')
+    cmd = ['emacsclient',
+           '-e',
+           "'(save-buffers-kill-terminal)'"]
+    if args.debug:
+        print(' '.join(cmd))
+        sys.exit()
+
+    # I am not sure why this doesn't work to kill scimax. I use the os command
+    # instead.
+
+    # cpe = subprocess.run(cmd, stdout=subprocess.PIPE, check=True)
+    # print(cpe.stdout)
+    import os
+    os.system(' '.join(cmd))
+    sys.exit()
+
+# https://stackoverflow.com/questions/1510481/how-can-i-detect-that-emacs-server-is-running-from-a-shell-prompt
+
+# This returns a byte string
+try:
+    ec = subprocess.check_output(["emacsclient", "-a", "false",
+                                  "-e", "'t'"]).strip()
+except subprocess.CalledProcessError:
+    ec = None
+
+if ec == b't':
+    # Server seems to be running so we open it.
+    # we always open a new frame.
+    cmd = ['emacsclient', '-n']
+
+    if args.e:
+        cmd += ["-e", args.e]
+
+    if args.t:
+        cmd += ['-t']
+    else:
+        # always create a new frame
+        cmd += ['-c']
+
+    if args.e and len(args.files) > 0:
+        raise Exception('You cannot use -e and files together')
+
+    cmd += [*args.files]
+
+    if args.edit_user:
+        cmd += [os.path.join(scimax_dir, 'user/user.el')]
+
+    if args.edit_preload:
+        cmd += [os.path.join(scimax_dir, 'user/preload.el')]
+
+    if args.debug:
+        print(' '.join(cmd))
+        sys.exit()
+
+    subprocess.run(cmd)
+else:
+    # Server was not running, so we open scimax in daemon mode
+    cmd = [emacs, "-q", "--daemon"]
+
+    if not args.q:
+        cmd += ["-l", scimax_init]
+    if args.e:
+        cmd += ["-e", args.e]
+
+    cmd += [*args.files]
+
+    if args.edit_user:
+        cmd += [os.path.join(scimax_dir, 'user/user.el')]
+
+    if args.edit_preload:
+        cmd += [os.path.join(scimax_dir, 'user/preload.el')]
+
+    print('Starting scimax')
+    if args.debug:
+        print(' '.join(cmd))
+        sys.exit()
+
+    subprocess.run(cmd)
