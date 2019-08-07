@@ -1,0 +1,45 @@
+#+title: pymax - A python package to install and run pymax
+
+You can install the bleeding edge version of this with this command.
+
+#+BEGIN_SRC sh
+pip install git+git@github.com:scimacs/pymax.git
+#+END_SRC
+
+Installing this package will:
+1. Check if you have the required packages (Emacs, git) and versions.
+2. Download the scimax elisp code if you don't already have it. If the scimax elisp directory exists, nothing is done.
+3. Download a curated list of elpa packages if you don't have them. If the elpa directory exists, nothing is done.
+
+It will install a script called =scimax= that will launch scimax. If no scimax is open, it will launch Emacs in daemon mode so that subsequent calls will use emacsclient. Here are the command line arguments that are supported.
+
+#+BEGIN_SRC sh :results drawer
+python scimax/scripts/scimax -h
+#+END_SRC
+
+#+RESULTS:
+:results:
+usage: scimax [-h] [--update] [-e E] [-c] [-t] [-k] [-q] [--debug]
+              [--edit-user] [--edit-preload]
+              [files [files ...]]
+
+Open scimax.
+
+positional arguments:
+  files
+
+optional arguments:
+  -h, --help      show this help message and exit
+  --update        Update scimax before opening.
+  -e E            Emacs lisp code to run
+  -c              Create a new frame
+  -t              Run in terminal
+  -k              Kill scimax
+  -q              Do not load scimax
+  --debug         Print debug commands
+  --edit-user     Edit the user.el file
+  --edit-preload  Edit the preload.el file
+:end:
+
+Known issues:
+1. If your scimax elisp/elpa repos are not clean you will have to manually fix that before you can use =git pull= to update them.
