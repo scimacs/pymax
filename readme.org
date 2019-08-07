@@ -11,7 +11,14 @@ Installing this package will:
 2. Download the scimax elisp code if you don't already have it. If the scimax elisp directory exists, nothing is done.
 3. Download a curated list of elpa packages if you don't have them. If the elpa directory exists, nothing is done.
 
-It will install a script called =scimax= that will launch scimax. If no scimax is open, it will launch Emacs in daemon mode so that subsequent calls will use emacsclient. Here are the command line arguments that are supported.
+scimax will be installed in ~/.scimax by default. You can modify where scimax is installed by creating a ~/.scimax/config file before installing this package. Here is an example that will install scimax somewhere else.
+
+#+BEGIN_EXAMPLE
+[DEFAULT]
+scimax_dir = /Users/jkitchin/vc/jkitchin-github/scimax
+#+END_EXAMPLE
+
+The installation will also install a script called =scimax= that will launch scimax. If no scimax is open, it will launch Emacs in daemon mode so that subsequent calls will use emacsclient. Here are the command line arguments that are supported.
 
 #+BEGIN_SRC sh :results drawer
 python scimax/scripts/scimax -h
