@@ -80,7 +80,7 @@ except subprocess.CalledProcessError:
 if ec == b't':
     # Server seems to be running so we open it.
     # we always open a new frame.
-    cmd = ['emacsclient', '-n']
+    cmd = [emacsclient, '-n']
 
     if args.e:
         cmd += ["-e", args.e]
