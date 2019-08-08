@@ -46,7 +46,7 @@ def windows_install_msys2(install_dir):
         urllib.request.urlretrieve(url, f)
 
     # Now we should run this.
-    # os.system(f)
+    print(f'os.system({f})')
 
 
 def check_for_programs(install_dir):
@@ -59,16 +59,7 @@ def check_for_programs(install_dir):
     if not emacs:
         if platform.system() == 'Windows':
             # Offer to install it?
-            install = input('Should I install an Emacs for you? (y/n) ')
-            if install.lower()[0] == 'y':
-                print('Installing emacs...')
-                windows_install_emacs(install_dir)
-            else:
-                raise Exception('''No emacs found. Please install one.
-Windows:
-Mac: brew tap d12frosted/emacs-plus\nbrew install emacs-plus
-Linux:
-''')
+            windows_install_emacs(install_dir)
         else:
             raise Exception('''No emacs found. Please install one.
 Windows:
@@ -101,11 +92,8 @@ Linux:
         if not shutil.which('pacman'):
             print('pacman was not found, which suggests you do not have msys2 installed.')
         # Offer to install it?
-        print('Should I install msys2 for you? (y/n) ')
-        install = input().lower()[0] == 'y'
-        if install:
-            print(f'Installing msys2 from http://repo.msys2.org/distrib/msys2-x86_64-latest.exe')
-            windows_install_msys2(install_dir)
+        print(f'Installing msys2 from http://repo.msys2.org/distrib/msys2-x86_64-latest.exe')
+        windows_install_msys2(install_dir)
 
 
 class my_build_py(build_py):
