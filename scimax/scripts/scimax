@@ -36,6 +36,9 @@ winemacs = os.path.join(scimax_dir, 'emax64/bin/runemacs.exe')
 if not emacs and os.path.exists(winemacs):
     emacs = winemacs
 
+if not emacs:
+    raise Exception('No emacs found')
+
 # The defaults can be overwritten here
 config = configparser.ConfigParser()
 cf = os.path.expanduser('~/.scimax/config')
@@ -126,7 +129,7 @@ else:
 
     print('Starting scimax')
     if args.debug:
-        print(' '.join(cmd))
+        print(cmd)
         sys.exit()
 
     subprocess.run(cmd)
