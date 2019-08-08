@@ -35,8 +35,8 @@ python scimax/scripts/scimax -h
 
 #+RESULTS:
 :results:
-usage: scimax [-h] [--update] [-e E] [-c] [-t] [-k] [-q] [--debug]
-              [--edit-user] [--edit-preload]
+usage: scimax [-h] [-e E] [-c] [-t] [-k] [-q] [--debug] [--edit-user]
+              [--edit-preload]
               [files [files ...]]
 
 Open scimax.
@@ -46,7 +46,6 @@ positional arguments:
 
 optional arguments:
   -h, --help      show this help message and exit
-  --update        Update scimax before opening.
   -e E            Emacs lisp code to run
   -c              Create a new frame
   -t              Run in terminal
