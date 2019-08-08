@@ -110,6 +110,10 @@ class my_build_py(build_py):
                 config.read(cf)
                 scimax_dir = config['DEFAULT'].get('scimax_dir', scimax_dir)
 
+            if not os.path.isdir(scimax_dir):
+                os.makedirs(scimax_dir)
+
+
             check_for_programs(scimax_dir)
 
             # This is the scimax code
