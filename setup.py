@@ -128,9 +128,10 @@ class my_build_py(build_py):
 
             check_for_programs(scimax_dir)
 
+            scimax_elisp = os.path.join(scimax_dir, 'scimax')
             # This is the scimax code
-            if not os.path.isdir(scimax_dir):
-                print('I did not find scimax. '
+            if not os.path.isdir(scimax_elisp):
+                print('I did not find scimax/init.el. '
                       f'Cloning scimax in a subprocess at {scimax_dir}.')
                 cpe = subprocess.run(['git', 'clone',
                                       'git@github.com:jkitchin/scimax.git',
@@ -140,24 +141,24 @@ class my_build_py(build_py):
                                      check=True)
                 print(f'stdout:\n{cpe.stdout.decode("ascii")}',
                       f'\nstderr:{cpe.stderr.decode("ascii")}')
-            else:
-                print(f'Existing build at {scimax_dir}. '
-                      'Pulling scimax now.'
-                      'If your repo is not clean, this may fail.')
-                pwd = os.getcwd()
-                os.chdir(scimax_dir)
-                cpe = subprocess.run(['git', 'pull'],
-                                     stdout=subprocess.PIPE,
-                                     stderr=subprocess.PIPE,
-                                     check=True)
-                print(f'stdout:\n{cpe.stdout.decode("ascii")}',
-                      f'\nstderr:{cpe.stderr.decode("ascii")}')
-                os.chdir(pwd)
+            # else:
+            #     print(f'Existing build at {scimax_dir}/scimax. '
+            #           'Pulling scimax now.'
+            #           'If your repo is not clean, this may fail.')
+            #     pwd = os.getcwd()
+            #     os.chdir(scimax_elisp)
+            #     cpe = subprocess.run(['git', 'pull'],
+            #                          stdout=subprocess.PIPE,
+            #                          stderr=subprocess.PIPE,
+            #                          check=True)
+            #     print(f'stdout:\n{cpe.stdout.decode("ascii")}',
+            #           f'\nstderr:{cpe.stderr.decode("ascii")}')
+            #     os.chdir(pwd)
 
             print('Fetching elpa')
             # Note: I could download a zip file here which might avoid vc issues
             # when the packages are updated later.
-            scimax_elpa = os.path.join(scimax_dir, 'elpa')
+            scimax_elpa = os.path.join(scimax_elisp, 'elpa')
             if not os.path.isdir(scimax_elpa):
                 cpe = subprocess.run(['git', 'clone',
                                       'https://github.com/scimacs/scimacs-elpa.git',
