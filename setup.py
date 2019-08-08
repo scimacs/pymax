@@ -162,9 +162,11 @@ class my_build_py(build_py):
             # when the packages are updated later.
             scimax_elpa = os.path.join(scimax_elisp, 'elpa')
             if not os.path.isdir(scimax_elpa):
-                cpe = subprocess.run(['git', 'clone',
-                                      'https://github.com/scimacs/scimacs-elpa.git',
-                                      scimax_dir],
+                cmd = ['git', 'clone',
+                       'https://github.com/scimacs/scimacs-elpa.git',
+                       scimax_elpa]
+                print(' '.join(command))
+                cpe = subprocess.run(cmd,
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
                                      check=True)
