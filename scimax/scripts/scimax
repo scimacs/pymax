@@ -7,7 +7,7 @@ import argparse
 import git
 import sys
 import configparser
-
+import platform
 
 parser = argparse.ArgumentParser(description='Open scimax.')
 parser.add_argument('--update', help='Update scimax before opening.',
@@ -34,6 +34,10 @@ args = parser.parse_args()
 emacs = shutil.which('emacs')
 scimax_dir = os.expanduser('~/.scimax/scimax')
 scimax_init = os.path.join(scimax_dir, 'init.el')
+
+winemacs = os.path.join(scimax_dir, 'emax64/bin/runemacs.exe')
+if not emacs and os.path.exists(winemacs):
+    emacs = winemacs
 
 # The defaults can be overwritten here
 config = configparser.ConfigParser()
