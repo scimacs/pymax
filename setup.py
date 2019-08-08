@@ -114,7 +114,7 @@ class my_build_py(build_py):
         if not self.dry_run:
 
             # Default installation
-            scimax_dir = os.expanduser('~/.scimax/scimax')
+            scimax_dir = os.path.expanduser('~/.scimax/scimax')
 
             config = configparser.ConfigParser()
             cf = os.path.expanduser('~/.scimax/config')
