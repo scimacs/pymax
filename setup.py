@@ -75,9 +75,11 @@ Mac: brew tap d12frosted/emacs-plus\nbrew install emacs-plus
 Linux:
 ''')
 
-    emacs_version = subprocess.check_output([emacs, '-q', '-batch',
-                                             '-eval',
-                                             "'(princ emacs-version)'"])
+    cmd = [emacs, '-q', '-batch',
+           '-eval',
+           "'(princ emacs-version)'"]
+    print(' '.join(cmd))
+    emacs_version = subprocess.check_output(cmd)
     emacs_version = emacs_version.decode('ascii').strip()
     if not int(emacs_version.split('.')[0]) >= 26:
         raise Exception('You need Emacs 26 or greater for scimax')
