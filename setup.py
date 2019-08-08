@@ -62,8 +62,8 @@ def check_for_programs(install_dir):
     You need an Emacs 26 or newer and git.
     '''
     emacs = (shutil.which('emacs')
-             or os.path.exists(os.path.join(install_dir,
-                                            'emax64/bin/runemacs.exe')))
+             or os.path.join(install_dir,
+                             'emax64/bin/runemacs.exe'))
     if not emacs:
         if platform.system() == 'Windows':
             # Offer to install it?
