@@ -1,4 +1,5 @@
 #+title: pymax - A python package to install and run pymax
+#+date: [2019-08-07 Wed]
 
 You can install the bleeding edge version of this with this command.
 
@@ -6,8 +7,16 @@ You can install the bleeding edge version of this with this command.
 pip install git+git@github.com:scimacs/pymax.git
 #+END_SRC
 
+On day you will be able to just do:
+
+#+BEGIN_SRC sh
+pip install pymax
+#+END_SRC
+
+but that won't happen before this is pretty stable. I do not have a timeline for deciding that, it will happen after I have used it myself long enough to be happy with it.
+
 Installing this package will:
-1. Check if you have the required packages (Emacs, git) and versions.
+1. Check if you have the required packages (Emacs, git) and versions. If you don't have these on your path, the setup will tell you where to get them and exit. Eventually I want this to install at least Emacs for you on Windows and Mac.
 2. Download the scimax elisp code if you don't already have it. If the scimax elisp directory exists, nothing is done.
 3. Download a curated list of elpa packages if you don't have them. If the elpa directory exists, nothing is done.
 
@@ -50,3 +59,7 @@ optional arguments:
 
 Known issues:
 1. If your scimax elisp/elpa repos are not clean you will have to manually fix that before you can use =git pull= to update them.
+
+* TODO Figure out how to install Emacs on Windows
+
+I think this is as simple as downloading an unzipping a zip file with all the required files.

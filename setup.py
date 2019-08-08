@@ -12,6 +12,9 @@ import shutil
 from git import Repo  # pip install gitpython
 import subprocess
 import configparser
+import platform
+import urllib.request
+
 
 # adapted from
 # http://www.digip.org/blog/2011/01/generating-data-files-in-setup.py.html It
@@ -19,13 +22,56 @@ import configparser
 # this currently does support dry-run. The main point of this package is really
 # the script and making installation easy.
 
+def windows_install_emacs(install_dir):
+    '''Install Emacs into install_dir.'''
+    # Install an emacs
+    url = ('https://github.com/m-parashar/emax64/releases/download/'
+           'emax64-26.2-20190417/emax64-bin-26.2.7z')
+    f = os.path.join(install_dir, 'emacs64.7z')
+    if not os.path.exists(f):
+        urllib.request.urlretrieve(url, f)
 
-def check_for_programs():
+    unzip = 'c:/Program Files/7-Zip/7z.exe'
+    if os.path.exists(unzip):
+        os.system(f'{unzip} e {f}')
+    else:
+        raise Exception('No 7z unzip program found. Please install '
+                        'one from https://www.7-zip.org/download.html')
+
+
+def windows_install_msys2(install_dir):
+    # install msys2?
+    url = 'http://repo.msys2.org/distrib/msys2-x86_64-latest.exe'
+    f = os.path.join(install_dir, 'msys2-x86_64-latest.exe')
+    if not os.path.exists(f):
+        urllib.request.urlretrieve(url, f)
+
+    # Now we should run this.
+    # os.system(f)
+
+
+def check_for_programs(install_dir):
     '''Runs checks for required programs.
     You need an Emacs 26 or newer and git.
     '''
-    if not shutil.which('emacs'):
-        raise Exception('''No emacs found. Please install one.
+    emacs = (shutil.which('emacs')
+             or os.path.exists(os.path.join(install_dir,
+                                            'emax64/bin/runemacs.exe')))
+    if not emacs:
+        if platform.system() == 'Windows':
+            # Offer to install it?
+            install = input('Should I install an Emacs for you? (y/n) ')
+            if install.lower()[0] == 'y':
+                print('Installing emacs...')
+                windows_install_emacs(install_dir)
+            else:
+                raise Exception('''No emacs found. Please install one.
+Windows:
+Mac: brew tap d12frosted/emacs-plus\nbrew install emacs-plus
+Linux:
+''')
+        else:
+            raise Exception('''No emacs found. Please install one.
 Windows:
 Mac: brew tap d12frosted/emacs-plus\nbrew install emacs-plus
 Linux:
@@ -52,12 +98,23 @@ Mac: http://www.tug.org/mactex/
 Linux:
 ''')
 
+    if platform.system() == 'Windows':
+        if not shutil.which('pacman'):
+            print('pacman was not found, which suggests you do not have msys2 installed.')
+        # Offer to install it?
+        print('Should I install msys2 for you? (y/n) ')
+        install = raw_input().lower()[0] == 'y'
+        if install:
+            print(f'Installing msys2 from http://repo.msys2.org/distrib/msys2-x86_64-latest.exe')
+            windows_install_msys2(install_dir)
+
+
+
 
 class my_build_py(build_py):
     def run(self):
         # honor the --dry-run flag
         if not self.dry_run:
-            check_for_programs()
 
             # Default installation
             scimax_dir = os.expanduser('~/.scimax/scimax')
@@ -67,6 +124,8 @@ class my_build_py(build_py):
             if os.path.exists(cf):
                 config.read(cf)
                 scimax_dir = config['DEFAULT'].get('scimax_dir', scimax_dir)
+
+            check_for_programs(scimax_dir)
 
             # This is the scimax code
             if not os.path.isdir(scimax_dir):
