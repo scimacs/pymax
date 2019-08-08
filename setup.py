@@ -37,8 +37,8 @@ def windows_install_emacs(install_dir):
         os.chdir(install_dir)
         if os.path.exists(unzip):
             cmd = [unzip, 'x', f]
-            #print(f'Extracting emacs... with {cmd}')
-            #subprocess.check_output(f'"{unzip}" x "{f}"', shell=True)
+            print(f'Extracting emacs... with {cmd}')
+            subprocess.check_output(f'"{unzip}" x "{f}"', shell=True)
             print('Done installing emacs')
         os.chdir(pwd)
     else:
