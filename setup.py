@@ -64,6 +64,7 @@ def check_for_programs(install_dir):
     emacs = (shutil.which('emacs')
              or os.path.join(install_dir,
                              'emax64/bin/emacs.exe')).replace("\\","/")
+    emacs = emacs
     if not emacs:
         if platform.system() == 'Windows':
             # Offer to install it?
@@ -77,7 +78,7 @@ Linux:
 
     cmd = [emacs, '-q', '-batch',
            '-eval',
-           "'(princ emacs-version)'"]
+           "(princ emacs-version)"]
     print(' '.join(cmd))
     emacs_version = subprocess.check_output(cmd)
     emacs_version = emacs_version.decode('ascii').strip()
