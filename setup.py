@@ -63,7 +63,7 @@ def check_for_programs(install_dir):
     '''
     emacs = (shutil.which('emacs')
              or os.path.join(install_dir,
-                             'emax64/bin/runemacs.exe'))
+                             'emax64/bin/emacs.exe'))
     if not emacs:
         if platform.system() == 'Windows':
             # Offer to install it?
