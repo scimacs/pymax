@@ -77,7 +77,7 @@ Linux:
 
     emacs_version = subprocess.check_output([emacs, '-q', '-batch',
                                              '-eval',
-                                             "(princ emacs-version)"])
+                                             "'(princ emacs-version)'"])
     emacs_version = emacs_version.decode('ascii').strip()
     if not int(emacs_version.split('.')[0]) >= 26:
         raise Exception('You need Emacs 26 or greater for scimax')
