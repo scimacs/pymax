@@ -63,7 +63,7 @@ def check_for_programs(install_dir):
     '''
     emacs = (shutil.which('emacs')
              or os.path.join(install_dir,
-                             'emax64/bin/emacs.exe'))
+                             'emax64/bin/emacs.exe')).replace("\\","/")
     if not emacs:
         if platform.system() == 'Windows':
             # Offer to install it?
@@ -100,9 +100,11 @@ Linux:
 
     if platform.system() == 'Windows':
         if not shutil.which('pacman'):
-            print('pacman was not found, which suggests you do not have msys2 installed.')
+            print('pacman was not found, which suggests you do '
+                  'not have msys2 installed.')
         # Offer to install it?
-        print(f'Installing msys2 from http://repo.msys2.org/distrib/msys2-x86_64-latest.exe')
+        print(f'Installing msys2 from http://repo.msys2.org/distrib'
+              '/msys2-x86_64-latest.exe')
         windows_install_msys2(install_dir)
 
 
@@ -122,7 +124,6 @@ class my_build_py(build_py):
 
             if not os.path.isdir(scimax_dir):
                 os.makedirs(scimax_dir)
-
 
             check_for_programs(scimax_dir)
 
