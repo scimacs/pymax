@@ -112,7 +112,7 @@ if ec == b't':
     subprocess.run(cmd)
 else:
     # Server was not running, so we open scimax in daemon mode
-    cmd = [emacs, "-q", "--daemon"]
+    cmd = [emacs.replace("\\","/"), "-q", "--daemon"]
 
     if not args.q:
         cmd += ["-l", scimax_init]
