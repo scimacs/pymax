@@ -36,7 +36,8 @@ def windows_install_emacs(install_dir):
         pwd = os.getcwd()
         os.chdir(install_dir)
         if os.path.exists(unzip):
-            os.system(f'"{unzip}" x {f}')
+            print('Extracting emacs...')
+            os.system(f'cd {install_dir}; "{unzip}" x emax64.7z')
         os.chdir(pwd)
     else:
         raise Exception('No 7z unzip program found. Please install '
@@ -72,7 +73,7 @@ Mac: brew tap d12frosted/emacs-plus\nbrew install emacs-plus
 Linux:
 ''')
 
-    emacs_version = subprocess.check_output(['emacs', '-q', '-batch',
+    emacs_version = subprocess.check_output([emacs, '-q', '-batch',
                                              '-eval',
                                              "(princ emacs-version)"])
     emacs_version = emacs_version.decode('ascii').strip()
