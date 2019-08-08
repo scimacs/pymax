@@ -32,13 +32,6 @@ emacs = shutil.which('emacs')
 scimax_dir = os.path.expanduser('~/.scimax/scimax')
 scimax_init = os.path.join(scimax_dir, 'init.el')
 
-winemacs = os.path.join(scimax_dir, 'emax64/bin/runemacs.exe')
-if not emacs and os.path.exists(winemacs):
-    emacs = winemacs
-
-if not emacs:
-    raise Exception('No emacs found')
-
 # The defaults can be overwritten here
 config = configparser.ConfigParser()
 cf = os.path.expanduser('~/.scimax/config')
@@ -48,6 +41,13 @@ if os.path.exists(cf):
     emacs = config['DEFAULT'].get('emacs', emacs)
     scimax_dir = config['DEFAULT'].get('scimax_dir', scimax_dir)
     scimax_init = os.path.join(scimax_dir, 'init.el')
+
+winemacs = os.path.join(scimax_dir, 'emax64/bin/runemacs.exe')
+if not emacs and os.path.exists(winemacs):
+    emacs = winemacs
+
+if not emacs:
+    raise Exception('No emacs found')
 
 if args.k:
     print('Closing scimax.')
