@@ -128,7 +128,7 @@ class my_build_py(build_py):
 
             check_for_programs(scimax_dir)
 
-            scimax_elisp = os.path.join(scimax_dir, 'scimax')
+            scimax_elisp = os.path.join(scimax_dir, 'scimax').replace("\\","/")
             # This is the scimax code
             if not os.path.isdir(scimax_elisp):
                 print('I did not find scimax/init.el. '
