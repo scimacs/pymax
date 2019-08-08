@@ -65,10 +65,14 @@ if args.k:
     sys.exit()
 
 # https://stackoverflow.com/questions/1510481/how-can-i-detect-that-emacs-server-is-running-from-a-shell-prompt
+emacsclient = shutil.which('emacsclient')
+winemacsclient = os.path.join(scimax_dir, 'emax64/bin/emacsclient.exe')
+if not emacsclient and os.path.exists(winemacsclient):
+    emacsclient = winemacsclient
 
 # This returns a byte string
 try:
-    ec = subprocess.check_output(["emacsclient", "-a", "false",
+    ec = subprocess.check_output([emacsclient, "-a", "false",
                                   "-e", "'t'"]).strip()
 except subprocess.CalledProcessError:
     ec = None
