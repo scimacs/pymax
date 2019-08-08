@@ -132,4 +132,5 @@ else:
         print(cmd)
         sys.exit()
 
+    print(' '.join(cmd))
     subprocess.run(cmd)
