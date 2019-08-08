@@ -37,10 +37,9 @@ def windows_install_emacs(install_dir):
         os.chdir(install_dir)
         if os.path.exists(unzip):
             cmd = [unzip, 'x', f]
-            print(f'Extracting emacs... with {' '.join(cmd)}')
+            print(f'Extracting emacs... with {" ".join(cmd)}')
             subprocess.check_output(f'"{unzip}" x "{f}"', shell=True)
             print('Done installing emacs')
-            #os.system(cmd)
         os.chdir(pwd)
     else:
         raise Exception('No 7z unzip program found. Please install '
