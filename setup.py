@@ -133,9 +133,11 @@ class my_build_py(build_py):
             if not os.path.isdir(scimax_elisp):
                 print('I did not find scimax/init.el. '
                       f'Cloning scimax in a subprocess at {scimax_elisp}.')
-                cpe = subprocess.run(['git', 'clone',
-                                      'git@github.com:jkitchin/scimax.git',
-                                      scimax_elisp],
+                cmd = ['git', 'clone',
+                       'git@github.com:jkitchin/scimax.git',
+                       scimax_elisp]
+                print(' '.join(cmd))
+                cpe = subprocess.run(cmd,
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
                                      check=True)
