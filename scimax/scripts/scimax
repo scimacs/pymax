@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 # Defaults
 emacs = shutil.which('emacs')
-scimax_dir = os.expanduser('~/.scimax/scimax')
+scimax_dir = os.path.expanduser('~/.scimax/scimax')
 scimax_init = os.path.join(scimax_dir, 'init.el')
 
 winemacs = os.path.join(scimax_dir, 'emax64/bin/runemacs.exe')
