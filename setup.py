@@ -165,7 +165,7 @@ class my_build_py(build_py):
                 cmd = ['git', 'clone',
                        'https://github.com/scimacs/scimacs-elpa.git',
                        scimax_elpa]
-                print(' '.join(command))
+                print(' '.join(cmd))
                 cpe = subprocess.run(cmd,
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
