@@ -9,7 +9,6 @@ from distutils.core import setup
 from distutils.command.build_py import build_py
 import os
 import shutil
-from git import Repo  # pip install gitpython
 import subprocess
 import configparser
 import platform
@@ -103,12 +102,10 @@ Linux:
             print('pacman was not found, which suggests you do not have msys2 installed.')
         # Offer to install it?
         print('Should I install msys2 for you? (y/n) ')
-        install = raw_input().lower()[0] == 'y'
+        install = input().lower()[0] == 'y'
         if install:
             print(f'Installing msys2 from http://repo.msys2.org/distrib/msys2-x86_64-latest.exe')
             windows_install_msys2(install_dir)
-
-
 
 
 class my_build_py(build_py):
@@ -158,8 +155,14 @@ class my_build_py(build_py):
             # when the packages are updated later.
             scimax_elpa = os.path.join(scimax_dir, 'elpa')
             if not os.path.isdir(scimax_elpa):
-                Repo.clone_from('https://github.com/scimacs/scimacs-elpa.git',
-                                scimax_elpa)
+                cpe = subprocess.run(['git', 'clone',
+                                      'https://github.com/scimacs/scimacs-elpa.git',
+                                      scimax_dir],
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE,
+                                     check=True)
+                print(f'stdout:\n{cpe.stdout.decode("ascii")}',
+                      f'\nstderr:{cpe.stderr.decode("ascii")}')
 
             # We probably do not want to do this as it is likely there will be
             # conflicts.
