@@ -26,13 +26,13 @@ def windows_install_emacs(install_dir):
     # Install an emacs
     url = ('https://github.com/m-parashar/emax64/releases/download/'
            'emax64-26.2-20190417/emax64-bin-26.2.7z')
-    f = os.path.join(install_dir, 'emacs64.7z')
+    f = os.path.join(install_dir, 'emax64.7z')
     if not os.path.exists(f):
         urllib.request.urlretrieve(url, f)
 
     unzip = 'c:/Program Files/7-Zip/7z.exe'
     if os.path.exists(unzip):
-        os.system(f'{unzip} e {f}')
+        os.system(f'"{unzip}" e {f}')
     else:
         raise Exception('No 7z unzip program found. Please install '
                         'one from https://www.7-zip.org/download.html')
@@ -46,7 +46,7 @@ def windows_install_msys2(install_dir):
         urllib.request.urlretrieve(url, f)
 
     # Now we should run this.
-    print(f'os.system({f})')
+    print(f'os.system("{f}")')
 
 
 def check_for_programs(install_dir):
