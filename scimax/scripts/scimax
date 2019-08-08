@@ -30,7 +30,7 @@ args = parser.parse_args()
 # Defaults
 emacs = shutil.which('emacs')
 scimax_dir = os.path.expanduser('~/.scimax/scimax')
-scimax_init = os.path.join(scimax_dir, 'init.el')
+scimax_init = os.path.join(scimax_dir, scimax, 'init.el').replace("\\","/")
 
 # The defaults can be overwritten here
 config = configparser.ConfigParser()
