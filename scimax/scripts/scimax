@@ -4,14 +4,11 @@ import shutil
 import scimax
 import subprocess
 import argparse
-import git
 import sys
 import configparser
 import platform
 
 parser = argparse.ArgumentParser(description='Open scimax.')
-parser.add_argument('--update', help='Update scimax before opening.',
-                    action="store_true")
 parser.add_argument('-e', help='Emacs lisp code to run')
 parser.add_argument('-c', help='Create a new frame', action="store_true")
 parser.add_argument('-t', help='Run in terminal', action="store_true")
@@ -48,12 +45,6 @@ if os.path.exists(cf):
     emacs = config['DEFAULT'].get('emacs', emacs)
     scimax_dir = config['DEFAULT'].get('scimax_dir', scimax_dir)
     scimax_init = os.path.join(scimax_dir, 'init.el')
-
-
-if args.update:
-    repo = git.Repo(scimax_dir)
-    o = repo.remotes.origin
-    o.pull()
 
 if args.k:
     print('Closing scimax.')
