@@ -28,11 +28,16 @@ def windows_install_emacs(install_dir):
            'emax64-26.2-20190417/emax64-bin-26.2.7z')
     f = os.path.join(install_dir, 'emax64.7z')
     if not os.path.exists(f):
+        print('Downloading emacs for windows. Please be patient...')
         urllib.request.urlretrieve(url, f)
 
     unzip = 'c:/Program Files/7-Zip/7z.exe'
     if os.path.exists(unzip):
-        os.system(f'"{unzip}" e {f}')
+        pwd = os.getcwd()
+        os.chdir(install_dir)
+        if os.path.exists(unzip):
+            os.system(f'"{unzip}" x {f}')
+        os.chdir(pwd)
     else:
         raise Exception('No 7z unzip program found. Please install '
                         'one from https://www.7-zip.org/download.html')
