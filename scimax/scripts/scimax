@@ -8,129 +8,142 @@ import sys
 import configparser
 import platform
 
-parser = argparse.ArgumentParser(description='Open scimax.')
-parser.add_argument('-e', help='Emacs lisp code to run')
-parser.add_argument('-c', help='Create a new frame', action="store_true")
-parser.add_argument('-t', help='Run in terminal', action="store_true")
-parser.add_argument('-k', help='Kill scimax', action="store_true")
-parser.add_argument('-q', help='Do not load scimax', action="store_true")
-parser.add_argument('--debug', help='Print debug commands',
+parser = argparse.ArgumentParser(description='scimax command-line utility')
+parser.add_argument('--install-emacs', help='Install emacs',
                     action="store_true")
 
-parser.add_argument('--edit-user', help='Edit the user.el file',
-                    action="store_true")
+# parser.add_argument('-e', help='Emacs lisp code to run')
+# parser.add_argument('-c', help='Create a new frame', action="store_true")
+# parser.add_argument('-t', help='Run in terminal', action="store_true")
+# parser.add_argument('-k', help='Kill scimax', action="store_true")
+# parser.add_argument('-q', help='Do not load scimax', action="store_true")
+# parser.add_argument('--debug', help='Print debug commands',
+#                     action="store_true")
 
-parser.add_argument('--edit-preload', help='Edit the preload.el file',
-                    action="store_true")
+# parser.add_argument('--edit-user', help='Edit the user.el file',
+#                     action="store_true")
+
+# parser.add_argument('--edit-preload', help='Edit the preload.el file',
+#                     action="store_true")
 
 
 parser.add_argument('files', nargs='*')
 args = parser.parse_args()
 
-# Defaults
-emacs = shutil.which('emacs')
-scimax_dir = os.path.expanduser('~/.scimax/scimax')
-scimax_init = os.path.join(scimax_dir, 'scimax', 'init.el').replace("\\","/")
+scimax_dir = os.path.abspath(os.path.expanduser('~/.scimax/scimax'))
 
 # The defaults can be overwritten here
 config = configparser.ConfigParser()
-cf = os.path.expanduser('~/.scimax/config')
+cf = os.path.abspath(os.path.expanduser('~/.scimax/config'))
 
 if os.path.exists(cf):
     config.read(cf)
-    emacs = config['DEFAULT'].get('emacs', emacs)
     scimax_dir = config['DEFAULT'].get('scimax_dir', scimax_dir)
-    scimax_init = os.path.join(scimax_dir, 'init.el')
 
-winemacs = os.path.join(scimax_dir, 'emax64/bin/runemacs.exe')
+scimax_init = os.path.join(scimax_dir, 'init.el')
+
+# Now we are ready to process arguments
+if platform.system() == 'Windows':
+    if args.install_emacs:
+        print('Installing an Emacs for you.')
+        sys.exit()
+    pass
+else:
+    raise Exception(f'{platform.system()} is not supported yet')
+
+
+# Defaults
+emacs = shutil.which('emacs')
+
+winemacs = os.abs.abspath(os.path.join(scimax_dir, 'emax64/bin/runemacs.exe'))
 if not emacs and os.path.exists(winemacs):
     emacs = winemacs
 
 if not emacs:
     raise Exception('No emacs found')
 
-if args.k:
-    print('Closing scimax.')
-    cmd = ['emacsclient',
-           '-e',
-           "'(save-buffers-kill-terminal)'"]
-    if args.debug:
-        print(' '.join(cmd))
-        sys.exit()
+# if args.k:
+#     print('Closing scimax.')
+#     cmd = ['emacsclient',
+#            '-e',
+#            "'(save-buffers-kill-terminal)'"]
+#     if args.debug:
+#         print(' '.join(cmd))
+#         sys.exit()
 
-    # I am not sure why this doesn't work to kill scimax. I use the os command
-    # instead.
+#     # I am not sure why this doesn't work to kill scimax. I use the os command
+#     # instead.
 
-    # cpe = subprocess.run(cmd, stdout=subprocess.PIPE, check=True)
-    # print(cpe.stdout)
-    import os
-    os.system(' '.join(cmd))
-    sys.exit()
+#     # cpe = subprocess.run(cmd, stdout=subprocess.PIPE, check=True)
+#     # print(cpe.stdout)
+#     import os
+#     os.system(' '.join(cmd))
+#     sys.exit()
 
-# https://stackoverflow.com/questions/1510481/how-can-i-detect-that-emacs-server-is-running-from-a-shell-prompt
-emacsclient = shutil.which('emacsclient')
-winemacsclient = os.path.join(scimax_dir, 'emax64/bin/emacsclient.exe')
-if not emacsclient and os.path.exists(winemacsclient):
-    emacsclient = winemacsclient
+# # https://stackoverflow.com/questions/1510481/how-can-i-detect-that-emacs-server-is-running-from-a-shell-prompt
+# emacsclient = shutil.which('emacsclient')
+# winemacsclient = os.path.join(scimax_dir, 'emax64/bin/emacsclient.exe')
+# if not emacsclient and os.path.exists(winemacsclient):
+#     emacsclient = winemacsclient
 
-# This returns a byte string
-try:
-    ec = subprocess.check_output([emacsclient, "-a", "false",
-                                  "-e", "'t'"]).strip()
-except subprocess.CalledProcessError:
-    ec = None
+# # This returns a byte string
+# try:
+#     ec = subprocess.check_output([emacsclient, "-a", "false",
+#                                   "-e", "'t'"]).strip()
+# except subprocess.CalledProcessError:
+#     ec = None
 
-if ec == b't':
-    # Server seems to be running so we open it.
-    # we always open a new frame.
-    cmd = [emacsclient, '-n']
+# if ec == b't':
+#     # Server seems to be running so we open it.
+#     # we always open a new frame.
+#     cmd = [emacsclient, '-n']
 
-    if args.e:
-        cmd += ["-e", args.e]
+#     if args.e:
+#         cmd += ["-e", args.e]
 
-    if args.t:
-        cmd += ['-t']
-    else:
-        # always create a new frame
-        cmd += ['-c']
+#     if args.t:
+#         cmd += ['-t']
+#     else:
+#         # always create a new frame
+#         cmd += ['-c']
 
-    if args.e and len(args.files) > 0:
-        raise Exception('You cannot use -e and files together')
+#     if args.e and len(args.files) > 0:
+#         raise Exception('You cannot use -e and files together')
 
-    cmd += [*args.files]
+#     cmd += [*args.files]
 
-    if args.edit_user:
-        cmd += [os.path.join(scimax_dir, 'user/user.el')]
+#     if args.edit_user:
+#         cmd += [os.path.join(scimax_dir, 'user/user.el')]
 
-    if args.edit_preload:
-        cmd += [os.path.join(scimax_dir, 'user/preload.el')]
+#     if args.edit_preload:
+#         cmd += [os.path.join(scimax_dir, 'user/preload.el')]
 
-    if args.debug:
-        print(' '.join(cmd))
-        sys.exit()
+#     if args.debug:
+#         print(' '.join(cmd))
+#         sys.exit()
 
-    subprocess.run(cmd)
-else:
-    # Server was not running, so we open scimax in daemon mode
-    cmd = [emacs.replace("\\","/"), "-q", "--daemon"]
+#     subprocess.run(cmd)
+# else:
+#     # Server was not running, so we open scimax in daemon mode
+#     cmd = [emacs.replace("\\","/"), "-q", "--daemon"]
 
-    if not args.q:
-        cmd += ["-l", scimax_init]
-    if args.e:
-        cmd += ["-e", args.e]
+#     if not args.q:
+#         cmd += ["-l", scimax_init]
+#     if args.e:
+#         cmd += ["-e", args.e]
 
-    cmd += [*args.files]
+#     cmd += [*args.files]
 
-    if args.edit_user:
-        cmd += [os.path.join(scimax_dir, 'user/user.el')]
+#     if args.edit_user:
+#         cmd += [os.path.join(scimax_dir, 'user/user.el')]
 
-    if args.edit_preload:
-        cmd += [os.path.join(scimax_dir, 'user/preload.el')]
+#     if args.edit_preload:
+#         cmd += [os.path.join(scimax_dir, 'user/preload.el')]
 
-    print('Starting scimax')
-    if args.debug:
-        print(cmd)
-        sys.exit()
+#     print('Starting scimax')
+#     if args.debug:
+#         print(cmd)
+#         sys.exit()
 
-    print(' '.join(cmd))
-    subprocess.run(cmd)
+#     print(' '.join(cmd))
+#     subprocess.run(cmd)
