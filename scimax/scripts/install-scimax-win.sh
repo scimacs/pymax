@@ -22,7 +22,7 @@ if [ ! -e "c:/Program Files/7-Zip/7z.exe" ]; then
     exit 1
 fi
 
-if [ ! -e "emax64.7z" ]; then    
+if [ ! -e "emax64.7z" ]; then
     curl -L -s https://github.com/m-parashar/emax64/releases/download/emax64-26.2-20190417/emax64-bin-26.2.7z --output emax64.7z
     "c:/Program Files/7-Zip/7z.exe" x emax64.7z
 fi
@@ -51,11 +51,11 @@ if [ ! -d "sox-14.4.2" ]; then
 fi
 
 
-if [ -x "$(command -v pandoc)" ]; then
+if [ -d "pandoc-2.7.3-windows-x86_64" ]; then
     curl -L -s https://github.com/jgm/pandoc/releases/download/2.7.3/pandoc-2.7.3-windows-x86_64.zip --output pandoc-2.7.3-windows-x86_64.zip
     unzip pandoc-2.7.3-windows-x86_64.zip
 fi
-     
+
 # Now clone scimax
 if [ ! -d "scimax" ]; then
     echo "Cloning the scimax elisp repo"
@@ -85,7 +85,7 @@ export PATH=\$PATH:`pwd`/emax64/bin/
 export PATH=\$PATH:`pwd`/wkhtmltox/bin/
 export PATH=\$PATH:`pwd`/sox-14.4.2/
 export PATH=\$PATH:`pwd`/pandoc-2.7.3-windows-x86_64
-`pwd`/emax64/bin/runemacs.exe -q -l `pwd`/scimax/init.el  
+`pwd`/emax64/bin/runemacs.exe -q -l `pwd`/scimax/init.el
 EOF
 
 # we need to byte-compile the elpa dir
@@ -93,5 +93,4 @@ echo "Opening scimax to byte-compile the elisp files. This takes a while."
 echo "You may get prompted to kill an elpa process. Type no."
 echo "You will be prompted to install some binary files for emacs-jupyter."
 echo "You should type y for yes for these."
-#./scimax.sh --eval "(byte-recompile-directory \"${pwd}scimax/elpa\" 0 t)"
-
+./scimax.sh --eval "(byte-recompile-directory \"${pwd}scimax/elpa\" 0 t)"
