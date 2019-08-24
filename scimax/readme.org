@@ -8,4 +8,8 @@ pip install scimax
 
 
 
-Then, there will be a command line utility to install and run scimax.
+Then, there will be a command line utility to install and run scimax. For example, on Windows you would run:
+
+#+BEGIN_SRC sh
+install-scimax-win.sh
+#+END_SRC

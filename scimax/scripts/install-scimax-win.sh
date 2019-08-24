@@ -33,12 +33,6 @@ if [ ! -d "emax" ]; then
     "c:/Program Files/7-Zip/7z.exe" x emax.7z
 fi
 
-if [ ! -e "pdf-tools.7z" ]; then
-    curl -L -s https://github.com/m-parashar/emax64/releases/download/emax64-26.2-20190417/pdf-tools-20190413.2018.7z --output pdf-tools.7z
-    "c:/Program Files/7-Zip/7z.exe" x pdf-tools.7z
-    mv pdf-tools-20190413.2018 scimax/elpa
-fi
-
 if [ ! -d "wkhtmltox" ]; then
     curl -L -s https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox-0.12.5-1.mxe-cross-win64.7z --output wkhtmltox.7z
     "c:/Program Files/7-Zip/7z.exe" x wkhtmltox.7z
@@ -67,6 +61,12 @@ if [ ! -d "scimax/elpa" ]; then
     echo "Cloning the initial elpa repo"
     # might consider getting the zip file instead so this won't be under version control
     git clone https://github.com/scimacs/scimacs-elpa.git scimax/elpa
+fi
+
+if [ ! -e "pdf-tools.7z" ]; then
+    curl -L -s https://github.com/m-parashar/emax64/releases/download/emax64-26.2-20190417/pdf-tools-20190413.2018.7z --output pdf-tools.7z
+    "c:/Program Files/7-Zip/7z.exe" x pdf-tools.7z
+    mv pdf-tools-20190413.2018 scimax/elpa
 fi
 
 # TODO: what to do about auctex. It is a little tricky to get

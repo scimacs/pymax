@@ -12,4 +12,5 @@ setup(name='scimax',
       author_email='jkitchin@andrew.cmu.edu',
       url='https://github.com/jkitchin/scimax',
       packages=['scimax'],
-      scripts=['scimax/scripts/scimax'])
+      scripts=['scimax/scripts/scimax',
+               'scimax/scripts/install-scimax-win.sh'])
