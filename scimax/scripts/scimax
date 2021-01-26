@@ -55,7 +55,7 @@ else:
 # Defaults
 emacs = shutil.which('emacs')
 
-winemacs = os.abs.abspath(os.path.join(scimax_dir, 'emax64/bin/runemacs.exe'))
+winemacs = os.path.abspath(os.path.join(scimax_dir, 'emax64/bin/runemacs.exe'))
 if not emacs and os.path.exists(winemacs):
     emacs = winemacs
 

@@ -23,13 +23,13 @@ if [ ! -e "c:/Program Files/7-Zip/7z.exe" ]; then
 fi
 
 if [ ! -e "emax64.7z" ]; then
-    curl -L -s https://github.com/m-parashar/emax64/releases/download/emax64-26.2-20190417/emax64-bin-26.2.7z --output emax64.7z
+    curl -L -s https://github.com/m-parashar/emax64/releases/download/20191225/emax64-bin-26.3.7z --output emax64.7z
     "c:/Program Files/7-Zip/7z.exe" x emax64.7z
 fi
 
 # These are utilities we need
 if [ ! -d "emax" ]; then
-    curl -L -s https://github.com/m-parashar/emax64/releases/download/emax64-26.2-20190417/emax.7z --output emax.7z
+    curl -L -s https://github.com/m-parashar/emax64/releases/download/20191225/emax.7z --output emax.7z
     "c:/Program Files/7-Zip/7z.exe" x emax.7z
 fi
 
@@ -64,9 +64,9 @@ if [ ! -d "scimax/elpa" ]; then
 fi
 
 if [ ! -e "pdf-tools.7z" ]; then
-    curl -L -s https://github.com/m-parashar/emax64/releases/download/emax64-26.2-20190417/pdf-tools-20190413.2018.7z --output pdf-tools.7z
+    curl -L -s https://github.com/m-parashar/emax64/releases/download/20191225/pdf-tools-20191128.1731.7z --output pdf-tools.7z
     "c:/Program Files/7-Zip/7z.exe" x pdf-tools.7z
-    mv pdf-tools-20190413.2018 scimax/elpa
+    mv pdf-tools-20191128.1731 scimax/elpa
 fi
 
 # TODO: what to do about auctex. It is a little tricky to get
