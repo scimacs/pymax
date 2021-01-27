@@ -34,7 +34,7 @@ if [ ! -d "emax" ]; then
 fi
 
 if [ ! -d "wkhtmltox" ]; then
-    curl -L -s https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox-0.12.5-1.mxe-cross-win64.7z --output wkhtmltox.7z
+    curl -L -s https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.mxe-cross-win64.7z --output wkhtmltox.7z
     "c:/Program Files/7-Zip/7z.exe" x wkhtmltox.7z
 fi
 
@@ -56,12 +56,6 @@ if [ ! -d "scimax" ]; then
     git clone https://github.com/jkitchin/scimax.git
 fi
 
-# and the elpa
-if [ ! -d "scimax/elpa" ]; then
-    echo "Cloning the initial elpa repo"
-    # might consider getting the zip file instead so this won't be under version control
-    git clone https://github.com/scimacs/scimacs-elpa.git scimax/elpa
-fi
 
 if [ ! -e "pdf-tools.7z" ]; then
     curl -L -s https://github.com/m-parashar/emax64/releases/download/20191225/pdf-tools-20191128.1731.7z --output pdf-tools.7z
@@ -69,22 +63,25 @@ if [ ! -e "pdf-tools.7z" ]; then
     mv pdf-tools-20191128.1731 scimax/elpa
 fi
 
-# TODO: what to do about auctex. It is a little tricky to get
-# compiled. I am not sure it can be scripted easily. I had to install
-# a bunch of things like autoconf and git in msys2 to eventually get
-# it built. and even then it didn't work... It seems to work fine
-# installing from elpa though.
+if [ ! -e "sqlite3.zip" ]; then
+    curl -L -s https://www.sqlite.org/2021/sqlite-tools-win32-x86-3340100.zip --output sqlite3.zip
+    unzip sqlite3.zip
+fi
+
+
 
 echo "Creating scimax.sh. You can move this script to any convenient location or run it from here."
 cat <<EOF > scimax.sh
 #!/bin/bash
+
 export PATH=\$PATH:`pwd`/emax/bin/
 export PATH=\$PATH:`pwd`/emax/bin64/
 export PATH=\$PATH:`pwd`/emax/mingw64/bin/
 export PATH=\$PATH:`pwd`/emax64/bin/
 export PATH=\$PATH:`pwd`/wkhtmltox/bin/
 export PATH=\$PATH:`pwd`/sox-14.4.2/
-export PATH=\$PATH:`pwd`/pandoc-2.7.3-windows-x86_64
+export PATH=\$PATH:`pwd`/pandoc-2.7.3-windows-x86_64/
+export PATH=\$PATH:`pwd`/sqlite3/sqlite-tools-win32-x86-3340100/
 `pwd`/emax64/bin/runemacs.exe -q -l `pwd`/scimax/init.el
 EOF
 

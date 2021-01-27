@@ -2,6 +2,12 @@
 
 The idea in this package is to make it very easy to install scimax from python on all platforms.
 
+
+
+* One day in the future
+
+These do not currently work, but might one day.
+
 #+BEGIN_SRC sh
 pip install scimax
 #+END_SRC

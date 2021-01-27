@@ -1,10 +1,22 @@
 #+title: pymax - A python package to install and run pymax
 #+date: [2019-08-07 Wed]
 
-You can install the bleeding edge version of this with this command.
+
+The best way to try this right now is this installation script:
 
 #+BEGIN_SRC sh
-pip install git+git@github.com:scimacs/pymax.git
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/scimacs/pymax/master/scimax/scripts/install-scimax-win.sh)"
+#+END_SRC
+
+#+RESULTS:
+
+
+* Python
+
+My thought on this package is you would install it as a python package that would include some executable scripts to install and run Python. I am not positive I will stick with that idea though.
+
+#+BEGIN_SRC sh
+pip install git+git://github.com/scimacs/pymax.git
 #+END_SRC
 
 One day you will be able to just do:
